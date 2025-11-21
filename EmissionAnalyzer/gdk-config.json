@@ -1,0 +1,17 @@
+{
+  "component": {
+    "com.iotea.EmissionAnalyzer": {
+      "author": "Satyam",
+      "version": "1.0.32",
+      "build": {
+        "build_system": "custom",
+        "custom_build_command": ["bash", "build.sh"]
+      },
+      "publish": {
+        "bucket": "your-greengrass-artifact-s3-bucket",
+        "region": "us-east-2"
+      }
+    }
+  },
+  "gdk_version": "1.0.0"
+}

@@ -1,0 +1,61 @@
+{
+    "RecipeFormatVersion": "2020-01-25",
+    "ComponentName": "com.iotea.EmissionAnalyzer",
+    "ComponentVersion": "1.0.32",
+    "ComponentDescription": "Processes vehicle emission data (CO2) and reports the running maximum back to the client device.",
+    "ComponentPublisher": "Satyam",
+    "ComponentConfiguration": {
+        "DefaultConfiguration": {
+            "GGV2PubSubSdkConfig": {
+                "base-pubsub-topic": "com.iotea.EmissionAnalyzer",
+                "mqtt-subscribe-topics": [
+                    "vehicle/emission/data"
+                ]
+            },
+            "accessControl": {
+                "aws.greengrass.ipc.mqttproxy": {
+                    "com.iotea.EmissionAnalyzer:mqtt:1": {
+                        "policyDescription": "Allows MQTT proxy access",
+                        "operations": [
+                            "aws.greengrass#PublishToIoTCore",
+                            "aws.greengrass#SubscribeToIoTCore"
+                        ],
+                        "resources": [
+                            "*"
+                        ]
+                    }
+                },
+                "aws.greengrass.ipc.pubsub": {
+                    "com.iotea.EmissionAnalyzer:pubsub:1": {
+                        "policyDescription": "Allows IPC pubsub access",
+                        "operations": [
+                            "aws.greengrass#PublishToTopic",
+                            "aws.greengrass#SubscribeToTopic"
+                        ],
+                        "resources": [
+                            "*"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "Manifests": [
+        {
+            "Platform": {
+                "os": "*"
+            },
+            "Artifacts": [
+                {
+                    "URI": "s3://lab4satyams2/src.zip",
+                    "Unarchive": "ZIP"
+                }
+            ],
+            "Lifecycle": {
+                "Run": {
+                    "Script": "cd {artifacts:decompressedPath}/src/src && python3 -u main.py '{configuration:/GGV2PubSubSdkConfig}'"
+                }
+            }
+        }
+    ]
+}
